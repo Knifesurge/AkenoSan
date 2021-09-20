@@ -5,6 +5,8 @@ import json
 from datetime import datetime
 import subprocess
 import time
+from io import StringIO
+from contextlib import redirect_stdout
 
 TOKEN = os.getenv('AKENOSAN_TOKEN')
 CCDIR = "custom_commands"
@@ -83,9 +85,13 @@ async def run_command(ctx, name : str):
         return
     last_run = cmd['last_ran']
     try:
-        # Command found, so
-        exec(cmd['body'])   # Try and run the command
+        # Command found, so run and send message of result
+        f = StringIO()
+        with redirect_stdout(f):
+            exec(cmd['body'])   # Try and run the command
+        result = f.getvalue()
         cmd['last_run'] = datetime.now().strftime('%c') # Update the last time the cmd was run
+        await ctx.send(result)
     except:
         await ctx.send(f'There was an error running the command {name}')
         cmd['last_run'] = last_run

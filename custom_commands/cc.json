@@ -1,10 +1,3 @@
 {
-    "commands": [
-        {
-            "name": "test",
-            "body": "print('Test!')",
-            "created": "Sat Dec 14 08:39:53 2019",
-            "last_ran": ""
-        }
-    ]
+    "commands": []
 }
